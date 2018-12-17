@@ -1,7 +1,9 @@
 import 'bootstrap/dist/css/bootstrap.css'
 
-import TransactionModel from './models/TransactionModel'
+import TransactionController from './controllers/TransactionController'
 
-let t = new TransactionModel(new Date('2015-12-8'), 4, 150)
+let transactionController = new TransactionController()
 
-console.log(t.date)
+document.querySelector('form').addEventListener('submit', event => {
+  transactionController.addTransaction(event)
+})
