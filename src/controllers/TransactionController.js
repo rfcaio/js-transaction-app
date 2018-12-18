@@ -1,4 +1,6 @@
 
+import DateHelper from '../helpers/DateHelper'
+import TransactionListModel from '../models/TransactionListModel'
 import TransactionModel from '../models/TransactionModel'
 
 class TransactionController {
@@ -8,16 +10,17 @@ class TransactionController {
     this._dateInput = getById('date')
     this._amountInput = getById('amount')
     this._valueInput = getById('value')
+    this._transactionList = new TransactionListModel()
   }
 
   addTransaction (event) {
     event.preventDefault()
-
-    console.log(new TransactionModel(
-      new Date(this._dateInput.value.split('-')),
+    this._transactionList.add(new TransactionModel(
+      DateHelper.stringToDate(this._dateInput.value),
       this._amountInput.value,
       this._valueInput.value
     ))
+    console.log(this._transactionList)
   }
 }
 
