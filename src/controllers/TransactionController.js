@@ -2,6 +2,7 @@
 import DateHelper from '../helpers/DateHelper'
 import TransactionListModel from '../models/TransactionListModel'
 import TransactionModel from '../models/TransactionModel'
+import TransactionView from '../views/TransactionView'
 
 class TransactionController {
   constructor () {
@@ -11,6 +12,16 @@ class TransactionController {
     this._amountInput = getById('amount')
     this._valueInput = getById('value')
     this._transactionList = new TransactionListModel()
+    this._transactionView = new TransactionView(getById('transaction-view'))
+
+    this._transactionView.update(this._transactionList.transactions)
+  }
+
+  _restartForm () {
+    this._dateInput.value = ''
+    this._amountInput.value = 1
+    this._valueInput.value = 0
+    this._dateInput.focus()
   }
 
   addTransaction (event) {
@@ -20,7 +31,8 @@ class TransactionController {
       this._amountInput.value,
       this._valueInput.value
     ))
-    console.log(this._transactionList)
+    this._transactionView.update(this._transactionList.transactions)
+    this._restartForm()
   }
 }
 

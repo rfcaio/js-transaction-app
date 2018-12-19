@@ -8,7 +8,7 @@ class DateHelper {
     if (!(dateObject instanceof Date)) {
       throw Error('DateHelper.dateToString() => A valid date object should be passed.')
     }
-    return `${dateObject.getDate()}/${dateObject.getMonth()}/${dateObject.getFullYear()}`
+    return `${dateObject.getDate()}/${dateObject.getMonth() + 1}/${dateObject.getFullYear()}`
   }
 
   static stringToDate (dateString) {

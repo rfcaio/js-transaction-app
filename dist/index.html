@@ -9,27 +9,33 @@
   <main class="container">
     <h1>Transaction app</h1>
 
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <form>
+          <div class="col-md-4 form-group">
+            <label for="">Date</label>
+            <input class="form-control" id="date" type="date">
+          </div>
+
+          <div class="col-md-4 form-group">
+            <label for="">Amount</label>
+            <input class="form-control" id="amount" type="number">
+          </div>
+
+          <div class="col-md-4 form-group">
+            <label for="">Value</label>
+            <input class="form-control" id="value" type="number">
+          </div>
+
+          <div class="col-md-12 text-center">
+            <input class="btn btn-primary" type="submit" value="Add transaction">
+          </div>
+        </form>
+      </div>
+    </div>
+
     <div class="row">
-      <form>
-        <div class="col-md-4 form-group">
-          <label for="">Date</label>
-          <input class="form-control" id="date" type="date">
-        </div>
-
-        <div class="col-md-4 form-group">
-          <label for="">Amount</label>
-          <input class="form-control" id="amount" type="number">
-        </div>
-
-        <div class="col-md-4 form-group">
-          <label for="">Value</label>
-          <input class="form-control" id="value" type="number">
-        </div>
-
-        <div class="col-md-12 text-center">
-          <input class="btn btn-primary" type="submit" value="Add transaction">
-        </div>
-      </form>
+      <div class="col-md-12" id="transaction-view"></div>
     </div>
   </main>
 
