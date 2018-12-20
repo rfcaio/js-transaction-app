@@ -2,7 +2,7 @@
 import View from './View'
 
 class MessageView extends View {
-  template (message) {
+  template ({ message }) {
     return `<div class="alert alert-info">${message}</div>`
   }
 }
