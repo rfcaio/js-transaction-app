@@ -1,5 +1,6 @@
 
 import DateHelper from '../helpers/DateHelper'
+import MessageView from '../views/MessageView'
 import TransactionListModel from '../models/TransactionListModel'
 import TransactionModel from '../models/TransactionModel'
 import TransactionView from '../views/TransactionView'
@@ -11,6 +12,7 @@ class TransactionController {
     this._dateInput = getById('date')
     this._amountInput = getById('amount')
     this._valueInput = getById('value')
+    this._messageView = new MessageView(getById('message-view'))
     this._transactionList = new TransactionListModel()
     this._transactionView = new TransactionView(getById('transaction-view'))
 
@@ -31,6 +33,7 @@ class TransactionController {
       this._amountInput.value,
       this._valueInput.value
     ))
+    this._messageView.update('Transaction added with success.')
     this._transactionView.update(this._transactionList.transactions)
     this._restartForm()
   }

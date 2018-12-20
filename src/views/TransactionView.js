@@ -1,12 +1,9 @@
 
 import DateHelper from '../helpers/DateHelper'
+import View from './View'
 
-class TransactionView {
-  constructor (element) {
-    this._element = element
-  }
-
-  _template (transactionModel) {
+class TransactionView extends View {
+  template (transactionModel) {
     let body = transactionModel.map(transaction => `
       <tr>
         <td>${DateHelper.dateToString(transaction.date)}</td>
@@ -41,10 +38,6 @@ class TransactionView {
         </tfoot>
       </table>
     `
-  }
-
-  update (transactionModel) {
-    this._element.innerHTML = this._template(transactionModel)
   }
 }
 
