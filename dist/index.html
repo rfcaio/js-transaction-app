@@ -15,7 +15,7 @@
 
     <div class="panel panel-default">
       <div class="panel-body">
-        <form>
+        <form onsubmit="transactionController.addTransaction(event)">
           <div class="col-md-4 form-group">
             <label for="">Date</label>
             <input class="form-control" id="date" type="date">
@@ -33,6 +33,11 @@
 
           <div class="col-md-12 text-center">
             <input class="btn btn-primary" type="submit" value="Add transaction">
+
+            <button
+              class="btn btn-danger"
+              type="button"
+              onclick="transactionController.deleteTransactions()">Delete all</button>
           </div>
         </form>
       </div>

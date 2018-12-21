@@ -1,7 +1,8 @@
 
 class TransactionListModel {
-  constructor () {
+  constructor (hook) {
     this._transactions = []
+    this._hook = hook
   }
 
   get transactions () {
@@ -10,6 +11,12 @@ class TransactionListModel {
 
   add (transaction) {
     this._transactions = [...this._transactions, transaction]
+    this._hook(this)
+  }
+
+  deleteAll () {
+    this._transactions = []
+    this._hook(this)
   }
 }
 

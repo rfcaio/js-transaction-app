@@ -15,9 +15,10 @@ class TransactionController {
     this._valueInput = getById('value')
     this._messageModel = new MessageModel()
     this._messageView = new MessageView(getById('message-view'))
-    this._transactionList = new TransactionListModel()
+    this._transactionList = new TransactionListModel(model => {
+      this._transactionView.update(model)
+    })
     this._transactionView = new TransactionView(getById('transaction-view'))
-
     this._transactionView.update(this._transactionList)
   }
 
@@ -35,10 +36,15 @@ class TransactionController {
       this._amountInput.value,
       this._valueInput.value
     ))
-    this._transactionView.update(this._transactionList)
     this._messageModel.message = 'Transaction added with success.'
     this._messageView.update(this._messageModel)
     this._restartForm()
+  }
+
+  deleteTransactions () {
+    this._transactionList.deleteAll()
+    this._messageModel.message = 'All transactions deleted with success.'
+    this._messageView.update(this._messageModel)
   }
 }
 
