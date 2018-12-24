@@ -1,4 +1,5 @@
 
+import Bind from '../helpers/Bind'
 import DateHelper from '../helpers/DateHelper'
 import MessageModel from '../models/MessageModel'
 import MessageView from '../views/MessageView'
@@ -9,27 +10,12 @@ import TransactionView from '../views/TransactionView'
 class TransactionController {
   constructor () {
     let getById = document.getElementById.bind(document)
-    let self = this
 
     this._dateInput = getById('date')
     this._amountInput = getById('amount')
     this._valueInput = getById('value')
-    this._messageModel = new MessageModel()
-    this._messageView = new MessageView(getById('message-view'))
-    this._transactionList = new Proxy(new TransactionListModel(), {
-      get (target, property, receiver) {
-        let methods = ['add', 'deleteAll']
-        if (methods.includes(property) && typeof target[property] === 'function') {
-          return function () {
-            Reflect.apply(target[property], target, arguments)
-            self._transactionView.update(target)
-          }
-        }
-        return Reflect.get(target, property, receiver)
-      }
-    })
-    this._transactionView = new TransactionView(getById('transaction-view'))
-    this._transactionView.update(this._transactionList)
+    this._messageModel = new Bind(new MessageModel(), new MessageView(getById('message-view')), 'message')
+    this._transactionList = new Bind(new TransactionListModel(), new TransactionView(getById('transaction-view')), 'add', 'deleteAll')
   }
 
   _restartForm () {
@@ -47,14 +33,12 @@ class TransactionController {
       this._valueInput.value
     ))
     this._messageModel.message = 'Transaction added with success.'
-    this._messageView.update(this._messageModel)
     this._restartForm()
   }
 
   deleteTransactions () {
     this._transactionList.deleteAll()
     this._messageModel.message = 'All transactions deleted with success.'
-    this._messageView.update(this._messageModel)
   }
 }
 
