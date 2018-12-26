@@ -2,6 +2,16 @@ const path = require('path')
 
 module.exports = {
   devServer: {
+    before: function (app, server) {
+      app.get('/transactions', function (req, res) {
+        res.json([
+          { date: '1958-01-30', amount: 60, value: 500 },
+          { date: '1959-07-11', amount: 59, value: 500 },
+          { date: '1992-04-09', amount: 26, value: 500 },
+          { date: '1995-11-03', amount: 23, value: 500 }
+        ])
+      })
+    },
     contentBase: './dist',
     port: 8001
   },

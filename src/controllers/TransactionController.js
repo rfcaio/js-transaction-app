@@ -5,6 +5,7 @@ import MessageModel from '../models/MessageModel'
 import MessageView from '../views/MessageView'
 import TransactionListModel from '../models/TransactionListModel'
 import TransactionModel from '../models/TransactionModel'
+import TransactionService from '../services/TransactionService'
 import TransactionView from '../views/TransactionView'
 
 class TransactionController {
@@ -34,6 +35,19 @@ class TransactionController {
     ))
     this._messageModel.message = 'Transaction added with success.'
     this._restartForm()
+  }
+
+  importTransactions () {
+    TransactionService.import((error, transactions) => {
+      if (error) {
+        this._messageModel.message = error
+        return
+      }
+      transactions.forEach(({ date, amount, value }) => {
+        this._transactionList.add(new TransactionModel(DateHelper.stringToDate(date), amount, value))
+      })
+      this._messageModel.message = 'Transactions loaded with success.'
+    })
   }
 
   deleteTransactions () {

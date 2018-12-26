@@ -3,7 +3,7 @@ import DateHelper from '../helpers/DateHelper'
 import View from './View'
 
 class TransactionView extends View {
-  template ({ transactions }) {
+  template ({ transactions, volume }) {
     let body = transactions.map(transaction => `
       <tr>
         <td>${DateHelper.dateToString(transaction.date)}</td>
@@ -12,8 +12,6 @@ class TransactionView extends View {
         <td>${transaction.volume}</td>
       </tr>
     `).join('')
-
-    let total = transactions.reduce((total, { volume }) => total + volume, 0)
 
     return `
       <table class="table table-bordered table-striped">
@@ -32,7 +30,7 @@ class TransactionView extends View {
           <tr>
             <td colspan="3"></td>
             <td>
-              <b>${total}</b>
+              <b>${volume}</b>
             </td>
           </tr>
         </tfoot>
