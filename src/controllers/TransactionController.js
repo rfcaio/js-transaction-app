@@ -38,16 +38,16 @@ class TransactionController {
   }
 
   importTransactions () {
-    TransactionService.import((error, transactions) => {
-      if (error) {
-        this._messageModel.message = error
-        return
-      }
-      transactions.forEach(({ date, amount, value }) => {
-        this._transactionList.add(new TransactionModel(DateHelper.stringToDate(date), amount, value))
+    TransactionService.getAll()
+      .then(transactions => {
+        transactions.forEach(({ date, amount, value }) => {
+          this._transactionList.add(new TransactionModel(DateHelper.stringToDate(date), amount, value))
+        })
+        this._messageModel.message = 'Transactions loaded with success.'
       })
-      this._messageModel.message = 'Transactions loaded with success.'
-    })
+      .catch(error => {
+        this._messageModel.message = error
+      })
   }
 
   deleteTransactions () {

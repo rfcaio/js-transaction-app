@@ -2,13 +2,31 @@ const path = require('path')
 
 module.exports = {
   devServer: {
-    before: function (app, server) {
-      app.get('/transactions', function (req, res) {
+    before: (app, server) => {
+      app.get('/transactions/2014', (req, res) => {
         res.json([
-          { date: '1958-01-30', amount: 60, value: 500 },
-          { date: '1959-07-11', amount: 59, value: 500 },
-          { date: '1992-04-09', amount: 26, value: 500 },
-          { date: '1995-11-03', amount: 23, value: 500 }
+          { date: '2014-04-01', amount: 4, value: 200 },
+          { date: '2014-03-01', amount: 5, value: 575 },
+          { date: '2014-02-01', amount: 6, value: 250 },
+          { date: '2014-01-01', amount: 6, value: 125 }
+        ])
+      })
+
+      app.get('/transactions/2015', (req, res) => {
+        res.json([
+          { date: '2015-04-01', amount: 3, value: 250 },
+          { date: '2015-03-01', amount: 4, value: 500 },
+          { date: '2015-02-01', amount: 5, value: 175 },
+          { date: '2015-01-01', amount: 6, value: 150 }
+        ])
+      })
+
+      app.get('/transactions/2016', (req, res) => {
+        res.json([
+          { date: '2016-04-01', amount: 8, value: 275 },
+          { date: '2016-03-01', amount: 8, value: 125 },
+          { date: '2016-02-01', amount: 8, value: 175 },
+          { date: '2016-01-01', amount: 8, value: 675 }
         ])
       })
     },

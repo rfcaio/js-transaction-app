@@ -1,16 +1,41 @@
 
+import HttpService from './HttpService'
+
 class TransactionService {
-  static import (fn) {
-    let xhr = new window.XMLHttpRequest()
-    xhr.open('GET', '/transactions/')
-    xhr.onreadystatechange = () => {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        fn(null, JSON.parse(xhr.responseText))
-      } else if (xhr.status !== 200) {
-        fn('A problem occurred and transactions have been not loaded.')
-      }
-    }
-    xhr.send()
+  static _fromYear (year) {
+    return HttpService.get(`/transactions/${year}`)
+      .then(transactions => transactions)
+      .catch(() => {
+        throw Error(`A problem occurred and transactions from ${year} have been not loaded.`)
+      })
+  }
+
+  static from2014 () {
+    return TransactionService._fromYear('2014')
+  }
+
+  static from2015 () {
+    return TransactionService._fromYear('2015')
+  }
+
+  static from2016 () {
+    return TransactionService._fromYear('2016')
+  }
+
+  static getAll () {
+    return Promise.all([
+      TransactionService.from2016(),
+      TransactionService.from2015(),
+      TransactionService.from2014()
+    ])
+      .then(
+        transactions => transactions.reduce(
+          (transactionList, transactionsFromYear) => [...transactionList, ...transactionsFromYear], []
+        )
+      )
+      .catch(error => {
+        throw Error(error)
+      })
   }
 }
 
