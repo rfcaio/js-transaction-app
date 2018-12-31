@@ -12,11 +12,19 @@ class TransactionController {
   constructor () {
     let getById = document.getElementById.bind(document)
 
+    this._selectedColumn = ''
     this._dateInput = getById('date')
     this._amountInput = getById('amount')
     this._valueInput = getById('value')
     this._messageModel = new Bind(new MessageModel(), new MessageView(getById('message-view')), 'message')
-    this._transactionList = new Bind(new TransactionListModel(), new TransactionView(getById('transaction-view')), 'add', 'deleteAll')
+    this._transactionList = new Bind(
+      new TransactionListModel(),
+      new TransactionView(getById('transaction-view')),
+      'add',
+      'deleteAll',
+      'reverseTransactions',
+      'sortTransactions'
+    )
   }
 
   _restartForm () {
@@ -28,13 +36,17 @@ class TransactionController {
 
   addTransaction (event) {
     event.preventDefault()
-    this._transactionList.add(new TransactionModel(
-      DateHelper.stringToDate(this._dateInput.value),
-      this._amountInput.value,
-      this._valueInput.value
-    ))
-    this._messageModel.message = 'Transaction added with success.'
-    this._restartForm()
+    try {
+      this._transactionList.add(new TransactionModel(
+        DateHelper.stringToDate(this._dateInput.value),
+        this._amountInput.value,
+        this._valueInput.value
+      ))
+      this._messageModel.message = 'Transaction added with success.'
+      this._restartForm()
+    } catch (error) {
+      this._messageModel.message = error
+    }
   }
 
   importTransactions () {
@@ -53,6 +65,15 @@ class TransactionController {
   deleteTransactions () {
     this._transactionList.deleteAll()
     this._messageModel.message = 'All transactions deleted with success.'
+  }
+
+  orderBy (columnName) {
+    if (this._selectedColumn === columnName) {
+      this._transactionList.reverseTransactions()
+    } else {
+      this._transactionList.sortTransactions((a, b) => a[columnName] - b[columnName])
+      this._selectedColumn = columnName
+    }
   }
 }
 

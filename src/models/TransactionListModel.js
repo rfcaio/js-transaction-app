@@ -19,6 +19,14 @@ class TransactionListModel {
   deleteAll () {
     this._transactions = []
   }
+
+  reverseTransactions () {
+    this._transactions = this.transactions.slice(0).reverse()
+  }
+
+  sortTransactions (sortMethod) {
+    this._transactions = this.transactions.slice(0).sort(sortMethod)
+  }
 }
 
 export default TransactionListModel

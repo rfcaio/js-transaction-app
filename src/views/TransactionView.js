@@ -17,10 +17,10 @@ class TransactionView extends View {
       <table class="table table-bordered table-striped">
         <thead>
           <tr>
-            <th>DATE</th>
-            <th>AMOUNT</th>
-            <th>VALUE</th>
-            <th>VOLUME</th>
+            <th onclick="transactionController.orderBy('date')">DATE</th>
+            <th onclick="transactionController.orderBy('amount')">AMOUNT</th>
+            <th onclick="transactionController.orderBy('value')">VALUE</th>
+            <th onclick="transactionController.orderBy('volume')">VOLUME</th>
           </tr>
         </thead>
 
