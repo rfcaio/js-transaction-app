@@ -2,7 +2,7 @@
 import HttpService from './HttpService'
 
 class TransactionService {
-  static _fromYear (year) {
+  static _loadFromYear (year) {
     return HttpService.get(`/transactions/${year}`)
       .then(transactions => transactions)
       .catch(() => {
@@ -10,31 +10,20 @@ class TransactionService {
       })
   }
 
-  static from2014 () {
-    return TransactionService._fromYear('2014')
-  }
-
-  static from2015 () {
-    return TransactionService._fromYear('2015')
-  }
-
-  static from2016 () {
-    return TransactionService._fromYear('2016')
-  }
-
-  static getAll () {
+  static importAll () {
     return Promise.all([
-      TransactionService.from2016(),
-      TransactionService.from2015(),
-      TransactionService.from2014()
+      TransactionService._loadFromYear('2014'),
+      TransactionService._loadFromYear('2015'),
+      TransactionService._loadFromYear('2016')
     ])
       .then(
         transactions => transactions.reduce(
           (transactionList, transactionsFromYear) => [...transactionList, ...transactionsFromYear], []
         )
       )
-      .catch(error => {
-        throw Error(error)
+      .catch(({ message }) => {
+        console.error(`TransactionService.getAll() => ${message}`)
+        throw Error(message)
       })
   }
 }

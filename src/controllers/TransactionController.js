@@ -72,15 +72,15 @@ class TransactionController {
   }
 
   importTransactions () {
-    TransactionService.getAll()
+    TransactionService.importAll()
       .then(transactions => {
         transactions.forEach(({ date, amount, value }) => {
           this._transactionList.add(new TransactionModel(DateHelper.stringToDate(date), amount, value))
         })
         this._messageModel.message = 'Transactions loaded with success.'
       })
-      .catch(error => {
-        this._messageModel.message = error
+      .catch(({ message }) => {
+        this._messageModel.message = message
       })
   }
 
