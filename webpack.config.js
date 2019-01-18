@@ -5,28 +5,28 @@ module.exports = {
     before: (app, server) => {
       app.get('/transactions/2014', (req, res) => {
         res.json([
-          { date: '2014-04-01', amount: 4, value: 200 },
-          { date: '2014-03-01', amount: 5, value: 575 },
-          { date: '2014-02-01', amount: 6, value: 250 },
-          { date: '2014-01-01', amount: 6, value: 125 }
+          { _date: new Date(2014, 4, 1), _amount: 4, _value: 200 },
+          { _date: new Date(2014, 3, 1), _amount: 5, _value: 575 },
+          { _date: new Date(2014, 2, 1), _amount: 6, _value: 250 },
+          { _date: new Date(2014, 1, 1), _amount: 6, _value: 125 }
         ])
       })
 
       app.get('/transactions/2015', (req, res) => {
         res.json([
-          { date: '2015-04-01', amount: 3, value: 250 },
-          { date: '2015-03-01', amount: 4, value: 500 },
-          { date: '2015-02-01', amount: 5, value: 175 },
-          { date: '2015-01-01', amount: 6, value: 150 }
+          { _date: new Date(2015, 4, 1), _amount: 3, _value: 250 },
+          { _date: new Date(2015, 3, 1), _amount: 4, _value: 500 },
+          { _date: new Date(2015, 2, 1), _amount: 5, _value: 175 },
+          { _date: new Date(2015, 1, 1), _amount: 6, _value: 150 }
         ])
       })
 
       app.get('/transactions/2016', (req, res) => {
         res.json([
-          { date: '2016-04-01', amount: 8, value: 275 },
-          { date: '2016-03-01', amount: 8, value: 125 },
-          { date: '2016-02-01', amount: 8, value: 175 },
-          { date: '2016-01-01', amount: 8, value: 675 }
+          { _date: new Date(2016, 4, 1), _amount: 8, _value: 275 },
+          { _date: new Date(2016, 3, 1), _amount: 8, _value: 125 },
+          { _date: new Date(2016, 2, 1), _amount: 8, _value: 175 },
+          { _date: new Date(2016, 1, 1), _amount: 8, _value: 675 }
         ])
       })
     },

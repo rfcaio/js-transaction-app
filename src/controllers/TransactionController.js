@@ -1,10 +1,8 @@
 
 import Bind from '../helpers/Bind'
-import ConnectionFactory from '../services/ConnectionFactory'
 import DateHelper from '../helpers/DateHelper'
 import MessageModel from '../models/MessageModel'
 import MessageView from '../views/MessageView'
-import TransactionDAO from '../dao/TransactionDAO'
 import TransactionListModel from '../models/TransactionListModel'
 import TransactionModel from '../models/TransactionModel'
 import TransactionService from '../services/TransactionService'
@@ -27,25 +25,41 @@ class TransactionController {
       'reverseTransactions',
       'sortTransactions'
     )
-
-    ConnectionFactory.getConnection()
-      .then(connection => new TransactionDAO(connection))
-      .then(transactionDAO => transactionDAO.list())
-      .then(transactions => {
-        transactions.forEach(transaction => this._transactionList.add(transaction))
-      })
-      .catch(error => {
-        console.error(error)
-        this._messageModel.message = 'Could not load transactions.'
-      })
+    this._init()
   }
 
-  _createTransaction () {
+  _create () {
     return new TransactionModel(
       DateHelper.stringToDate(this._dateInput.value),
       parseInt(this._amountInput.value, 10),
       parseFloat(this._valueInput.value)
     )
+  }
+
+  _importAll () {
+    TransactionService.importAll(this._transactionList.transactions)
+      .then(transactions => {
+        transactions.forEach(({ _date, _amount, _value }) => {
+          this._transactionList.add(new TransactionModel(new Date(_date), _amount, _value))
+        })
+      })
+      .catch(({ message }) => {
+        this._messageModel.message = message
+      })
+  }
+
+  _init () {
+    TransactionService.list()
+      .then(transactions => {
+        transactions.forEach(transaction => this._transactionList.add(transaction))
+      })
+      .catch(({ message }) => {
+        this._messageModel.message = message
+      })
+
+    window.setInterval(() => {
+      this._importAll()
+    }, 3000)
   }
 
   _restartForm () {
@@ -55,45 +69,28 @@ class TransactionController {
     this._dateInput.focus()
   }
 
-  addTransaction (event) {
+  create (event) {
     event.preventDefault()
-    let transaction = this._createTransaction()
-    ConnectionFactory.getConnection()
-      .then(connection => new TransactionDAO(connection))
-      .then(transactionDAO => transactionDAO.add(transaction))
-      .then(() => {
+    let transaction = this._create()
+    TransactionService.create(transaction)
+      .then(message => {
         this._transactionList.add(transaction)
-        this._messageModel.message = 'Transaction added with success.'
+        this._messageModel.message = message
         this._restartForm()
-      })
-      .catch(error => {
-        this._messageModel.message = error
-      })
-  }
-
-  importTransactions () {
-    TransactionService.importAll()
-      .then(transactions => {
-        transactions.forEach(({ date, amount, value }) => {
-          this._transactionList.add(new TransactionModel(DateHelper.stringToDate(date), amount, value))
-        })
-        this._messageModel.message = 'Transactions loaded with success.'
       })
       .catch(({ message }) => {
         this._messageModel.message = message
       })
   }
 
-  deleteTransactions () {
-    ConnectionFactory.getConnection()
-      .then(connection => new TransactionDAO(connection))
-      .then(transactionDAO => transactionDAO.remove())
+  deleteAll () {
+    TransactionService.deleteAll()
       .then(message => {
         this._messageModel.message = message
         this._transactionList.deleteAll()
       })
-      .catch(error => {
-        this._messageModel.message = error
+      .catch(({ message }) => {
+        this._messageModel.message = message
       })
   }
 

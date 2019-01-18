@@ -1,5 +1,7 @@
 
+import ConnectionFactory from './ConnectionFactory'
 import HttpService from './HttpService'
+import TransactionDAO from '../dao/TransactionDAO'
 
 class TransactionService {
   static _loadFromYear (year) {
@@ -10,7 +12,33 @@ class TransactionService {
       })
   }
 
-  static importAll () {
+  static create (transaction) {
+    return ConnectionFactory.getConnection()
+      .then(connection => new TransactionDAO(connection))
+      .then(transactionDAO => transactionDAO.create(transaction))
+      .then(() => {
+        return 'Transaction created with success.'
+      })
+      .catch(error => {
+        console.error(`TransactionService.create() => ${error}`)
+        throw Error('Could not create transaction.')
+      })
+  }
+
+  static deleteAll () {
+    return ConnectionFactory.getConnection()
+      .then(connection => new TransactionDAO(connection))
+      .then(transactionDAO => transactionDAO.deleteAll())
+      .then(() => {
+        return 'All transactions deleted with success.'
+      })
+      .catch(error => {
+        console.error(`TransactionService.delete() => ${error}`)
+        throw Error('Could not delete transactions.')
+      })
+  }
+
+  static importAll (transactionList) {
     return Promise.all([
       TransactionService._loadFromYear('2014'),
       TransactionService._loadFromYear('2015'),
@@ -21,9 +49,26 @@ class TransactionService {
           (transactionList, transactionsFromYear) => [...transactionList, ...transactionsFromYear], []
         )
       )
+      .then(transactions => {
+        return transactions.filter(transaction => {
+          return transactionList.every(
+            _transaction => JSON.stringify(_transaction) !== JSON.stringify(transaction)
+          )
+        })
+      })
       .catch(({ message }) => {
-        console.error(`TransactionService.getAll() => ${message}`)
+        console.error(`TransactionService.importAll() => ${message}`)
         throw Error(message)
+      })
+  }
+
+  static list () {
+    return ConnectionFactory.getConnection()
+      .then(connection => new TransactionDAO(connection))
+      .then(transactionDAO => transactionDAO.list())
+      .catch(error => {
+        console.error(`TransactionService.list() => ${error}`)
+        throw Error('Could not list transactions.')
       })
   }
 }

@@ -7,12 +7,29 @@ class TransactionDAO {
     this._store = 'transactions'
   }
 
-  add (transaction) {
+  create (transaction) {
     return new Promise((resolve, reject) => {
       let request = this._connection
         .transaction([this._store], 'readwrite')
         .objectStore(this._store)
         .add(transaction)
+
+      request.onerror = event => {
+        reject(Error(event.target.error))
+      }
+
+      request.onsuccess = event => {
+        resolve()
+      }
+    })
+  }
+
+  deleteAll () {
+    return new Promise((resolve, reject) => {
+      let request = this._connection
+        .transaction([this._store], 'readwrite')
+        .objectStore(this._store)
+        .clear()
 
       request.onerror = event => {
         reject(Error(event.target.error))
@@ -45,23 +62,6 @@ class TransactionDAO {
         } else {
           resolve(transactions)
         }
-      }
-    })
-  }
-
-  remove () {
-    return new Promise((resolve, reject) => {
-      let request = this._connection
-        .transaction([this._store], 'readwrite')
-        .objectStore(this._store)
-        .clear()
-
-      request.onerror = event => {
-        reject(Error(event.target.error))
-      }
-
-      request.onsuccess = event => {
-        resolve('All transactions deleted with success.')
       }
     })
   }
