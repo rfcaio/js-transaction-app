@@ -1,3 +1,4 @@
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 const path = require('path')
 
 module.exports = {
@@ -40,7 +41,7 @@ module.exports = {
     rules: [
       { test: /\.css$/, use: ['style-loader', 'css-loader'] },
       { test: /\.html$/, use: ['html-loader'] },
-      { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' },
+      { test: /\.js$/, exclude: /node_modules/, use: ['babel-loader', 'eslint-loader'] },
       { test: /\.(eot|svg|ttf|woff|woff2)$/, use: ['file-loader'] }
     ]
   },
@@ -48,5 +49,10 @@ module.exports = {
     filename: 'bundle.js',
     path: path.resolve(__dirname, './dist')
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: 'src/index.html'
+    })
+  ],
   watch: true
 }
