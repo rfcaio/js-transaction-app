@@ -14,7 +14,7 @@ class TransactionView extends View {
     `).join('')
 
     return `
-      <table class="table table-bordered table-striped">
+      <table border="1">
         <thead>
           <tr>
             <th onclick="transactionController.orderBy('date')">DATE</th>

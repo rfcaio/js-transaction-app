@@ -3,7 +3,7 @@ import View from './View'
 
 class MessageView extends View {
   template ({ message }) {
-    return message === '' ? '' : `<div class="alert alert-info">${message}</div>`
+    return message === '' ? '' : `<div>${message}</div>`
   }
 }
 
