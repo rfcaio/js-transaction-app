@@ -1,3 +1,3 @@
 # About
 
-A simple transaction app.
+> A simple transaction app.
