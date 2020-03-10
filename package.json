@@ -1,11 +1,13 @@
 {
+  "name": "js-alura-course",
+  "version": "0.0.0",
+  "description": "A simple transaction app.",
   "author": {
     "email": "rfcaio90@gmail.com",
     "name": "Caio Rodrigues Fernandes",
     "url": "https://github.com/rfcaio"
   },
   "dependencies": {},
-  "description": "A simple transaction app.",
   "devDependencies": {
     "@babel/core": "7.1.2",
     "@babel/preset-env": "7.1.0",
@@ -28,7 +30,6 @@
   },
   "homepage": "https://github.com/rfcaio/js-alura-course#readme",
   "license": "MIT",
-  "name": "js-alura-course",
   "private": true,
   "repository": {
     "type": "git",
@@ -36,6 +37,5 @@
   },
   "scripts": {
     "start": "webpack-dev-server"
-  },
-  "version": "1.0.0"
+  }
 }
